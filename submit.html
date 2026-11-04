@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit a Script — Zentynal Hub</title>
+<meta name="description" content="Submit your Roblox script to Zentynal Hub. Free, keyless scripts for the community.">
+<link rel="canonical" href="https://zentynalhub.com/submit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
+  <div class="nav-links">
+    <a href="/">Scripts</a>
+    <a href="/submit.html" class="active">Submit</a>
+    <a href="/discord">Discord</a>
+  </div>
+  <div class="nav-right">
+    <a href="/submit.html" class="btn-submit">+ Submit Script</a>
+  </div>
+</nav>
+
+<div class="submit-page">
+  <h1>Submit a Script</h1>
+  <p class="sub">Share your script with the community. All submissions are reviewed before going live.</p>
+
+  <form id="submitForm" onsubmit="handleSubmit(event)">
+
+    <div class="form-group">
+      <label class="form-label">Script Name *</label>
+      <input class="form-input" type="text" name="name" placeholder="e.g. Tap Simulator Reborn Auto Farm" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Game Name *</label>
+      <input class="form-input" type="text" name="game" placeholder="e.g. Tap Simulator: Reborn" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Category *</label>
+      <select class="form-select" name="category" required>
+        <option value="" disabled selected>Select a category</option>
+        <option value="simulator">Simulator</option>
+        <option value="fps">FPS</option>
+        <option value="rpg">RPG</option>
+        <option value="fighting">Fighting</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Your Name / Discord *</label>
+      <input class="form-input" type="text" name="creator" placeholder="e.g. Zen#0001" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Short Description *</label>
+      <input class="form-input" type="text" name="desc" placeholder="What does this script do? (1–2 sentences)" required>
+      <p class="form-hint">This shows on the script card. Keep it under 120 characters.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Script Code *</label>
+      <textarea class="form-textarea" name="code" placeholder="-- paste your Lua script here" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Key System</label>
+      <select class="form-select" name="keyless">
+        <option value="keyless">Keyless (no key required)</option>
+        <option value="key">Has a key system</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-primary" id="submitBtn">Submit Script</button>
+
+    <div id="successMsg" style="display:none;margin-top:1rem;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:0.9rem 1.1rem;font-size:0.85rem;color:var(--green);">
+      ✓ Script submitted — we'll review and publish it within 24 hours.
+    </div>
+
+  </form>
+</div>
+
+<footer class="footer">
+  <span class="footer-logo">⚡ Zentynal Hub</span>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/discord">Discord</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <span>© 2026 Zentynal Hub</span>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault()
+  const btn = document.getElementById('submitBtn')
+  btn.textContent = 'Submitting...'
+  btn.disabled = true
+  setTimeout(() => {
+    document.getElementById('submitForm').style.opacity = '0.4'
+    document.getElementById('successMsg').style.display = 'block'
+    btn.style.display = 'none'
+  }, 800)
+  // wire to your backend / Discord webhook here
+  // fetch('https://discord.com/api/webhooks/YOUR_WEBHOOK', { method:'POST', ... })
+}
+</script>
+
+</body>
+</html>
