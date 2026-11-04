@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zentynal Hub — Free Keyless Roblox Scripts 2026</title>
+<meta name="description" content="Zentynal Hub — free keyless Roblox scripts updated daily. Auto farm, ESP, silent aim and more for the most popular Roblox games. No key required.">
+<meta name="keywords" content="roblox scripts 2026, free roblox scripts, keyless roblox scripts, roblox hack, roblox auto farm, roblox exploit scripts">
+<meta property="og:title" content="Zentynal Hub — Free Keyless Roblox Scripts 2026">
+<meta property="og:description" content="Free keyless Roblox scripts updated daily. No key required.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zentynalhub.com/">
+<link rel="canonical" href="https://zentynalhub.com/">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Zentynal Hub","url":"https://zentynalhub.com","description":"Free keyless Roblox scripts updated daily","potentialAction":{"@type":"SearchAction","target":"https://zentynalhub.com/search?q={search_term_string}","query-input":"required name=search_term_string"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
+  <div class="nav-links">
+    <a href="/" class="active">Scripts</a>
+    <a href="/submit.html">Submit</a>
+    <a href="/discord">Discord</a>
+  </div>
+  <div class="nav-right">
+    <a href="/submit.html" class="btn-submit">+ Submit Script</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Free <em>Keyless</em> Roblox Scripts</h1>
+  <p>Updated daily. No key, no redirects, no BS.</p>
+  <form class="search-wrap" action="/search" method="GET">
+    <input type="text" name="q" placeholder="Search by game name or feature..." autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+  <div class="hero-stats">
+    <div><strong id="totalScripts">24</strong> Scripts</div>
+    <div><strong>12k+</strong> Copies Today</div>
+    <div><strong>Daily</strong> Updates</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categories</div>
+      <nav class="sidebar-nav">
+        <a href="/" class="active">🗂 All Scripts <span class="count">24</span></a>
+        <a href="/category/simulator.html">🎮 Simulator <span class="count">9</span></a>
+        <a href="/category/fps.html">🎯 FPS <span class="count">6</span></a>
+        <a href="/category/rpg.html">⚔️ RPG <span class="count">5</span></a>
+        <a href="/category/fighting.html">🥊 Fighting <span class="count">4</span></a>
+      </nav>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Filter</div>
+      <nav class="sidebar-nav">
+        <a href="/?filter=keyless">🔓 Keyless Only</a>
+        <a href="/?filter=new">🆕 New This Week</a>
+        <a href="/?filter=popular">🔥 Most Viewed</a>
+      </nav>
+    </div>
+
+    <div class="ad-box">
+      <strong>Support Zentynal</strong>
+      Your ad impressions keep this site free and updated.
+    </div>
+
+    <!-- Google AdSense slot (replace with real unit) -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);min-height:250px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--muted);">
+      Ad Space (250×250)
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="filter-row">
+      <span class="label">Sort:</span>
+      <button class="chip on" onclick="setSort('new',this)">Newest</button>
+      <button class="chip" onclick="setSort('views',this)">Most Viewed</button>
+      <button class="chip" onclick="setSort('alpha',this)">A–Z</button>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title"><span class="dot"></span> All Scripts</div>
+      <a href="/submit.html" class="view-all">Submit yours →</a>
+    </div>
+
+    <div class="scripts-grid" id="grid"></div>
+
+  </main>
+</div>
+
+<!-- ADBLOCK NOTICE -->
+<div class="adblock-notice" id="adblockNotice">
+  <button class="adblock-close" onclick="dismissAdblock()">✕</button>
+  <h4>Adblocker Detected</h4>
+  <p>We use ads to keep scripts free and updated daily. Please consider whitelisting us.</p>
+  <div class="adblock-actions">
+    <button class="btn-ok" onclick="dismissAdblock()">OK, I'll whitelist</button>
+    <button class="btn-dismiss" onclick="dismissAdblock()">Dismiss</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <span class="footer-logo">⚡ Zentynal Hub</span>
+  <div class="footer-links">
+    <a href="/discord">Discord</a>
+    <a href="/submit.html">Submit Script</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <span>© 2026 Zentynal Hub — Not affiliated with Roblox Corporation</span>
+</footer>
+
+<script>
+const SCRIPTS = [
+  {
+    id:"tap-simulator-reborn",
+    name:"Tap Simulator Reborn",
+    game:"Tap Simulator: Reborn",
+    icon:"⛏️",
+    category:"simulator",
+    desc:"Auto mine, auto hatch, auto collect, auto craft. Full keyless farm loop for Tap Simulator Reborn.",
+    creator:"Zen",
+    views:1842,
+    date:"Nov 4, 2026",
+    keyless:true
+  },
+  {
+    id:"murder-mystery-2",
+    name:"Murder Mystery 2",
+    game:"Murder Mystery 2",
+    icon:"🔪",
+    category:"fps",
+    desc:"ESP for murderer and sheriff, silent aim, role highlight and coin ESP. Keyless, no ads.",
+    creator:"Zen",
+    views:3410,
+    date:"Nov 4, 2026",
+    keyless:true
+  },
+  {
+    id:"blox-fruits",
+    name:"Blox Fruits Auto Farm",
+    game:"Blox Fruits",
+    icon:"🍎",
+    category:"rpg",
+    desc:"Auto quest, auto combat, auto stat allocation. Fastest level method in Blox Fruits.",
+    creator:"Zen",
+    views:5821,
+    date:"Nov 2, 2026",
+    keyless:true
+  },
+  {
+    id:"pet-simulator-99",
+    name:"Pet Simulator 99",
+    game:"Pet Simulator 99",
+    icon:"🐾",
+    category:"simulator",
+    desc:"Auto hatch best egg, auto collect coins, auto enchant pets. Full farm loop.",
+    creator:"Zen",
+    views:4100,
+    date:"Nov 1, 2026",
+    keyless:true
+  },
+  {
+    id:"anime-adventures",
+    name:"Anime Adventures",
+    game:"Anime Adventures",
+    icon:"⚔️",
+    category:"rpg",
+    desc:"Auto place units, auto wave clear, auto collect gems and summons.",
+    creator:"Zen",
+    views:2240,
+    date:"Oct 28, 2026",
+    keyless:true
+  },
+  {
+    id:"arsenal",
+    name:"Arsenal Silent Aim",
+    game:"Arsenal",
+    icon:"🎯",
+    category:"fps",
+    desc:"Silent aim, no recoil, FOV lock. Clean no-detect build for Arsenal.",
+    creator:"Zen",
+    views:2930,
+    date:"Nov 3, 2026",
+    keyless:true
+  },
+  {
+    id:"tower-of-hell",
+    name:"Tower of Hell Auto Skip",
+    game:"Tower of Hell",
+    icon:"🏗️",
+    category:"other",
+    desc:"Auto win, auto skip tower, infinite jump. Full bypass for Tower of Hell.",
+    creator:"Zen",
+    views:1750,
+    date:"Oct 25, 2026",
+    keyless:true
+  },
+  {
+    id:"adopt-me",
+    name:"Adopt Me Auto Farm",
+    game:"Adopt Me!",
+    icon:"🐣",
+    category:"simulator",
+    desc:"Auto collect bucks, auto complete tasks, auto age pets. Fully automated farm.",
+    creator:"Zen",
+    views:3200,
+    date:"Oct 20, 2026",
+    keyless:true
+  },
+]
+
+let sortMode = 'new'
+
+function renderGrid(list) {
+  const grid = document.getElementById('grid')
+  grid.innerHTML = list.map(s => `
+    <a href="/scripts/${s.id}.html" class="script-card">
+      <div class="card-thumb">${s.icon}</div>
+      <div class="card-body">
+        <div class="card-title-row">
+          <span class="card-name">${s.name}</span>
+          ${s.keyless ? '<span class="pill keyless">Keyless</span>' : '<span class="pill paid">Key</span>'}
+        </div>
+        <div><span class="game-tag">${s.game}</span></div>
+        <p class="card-desc">${s.desc}</p>
+        <div class="card-footer">
+          <div class="card-footer-left">
+            <span class="card-creator">${s.creator}</span>
+            <span class="card-views">${s.views.toLocaleString()}</span>
+          </div>
+          <span class="card-date">${s.date}</span>
+        </div>
+      </div>
+    </a>
+  `).join('')
+}
+
+function setSort(mode, el) {
+  sortMode = mode
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'))
+  el.classList.add('on')
+  let sorted = [...SCRIPTS]
+  if (mode === 'views') sorted.sort((a,b) => b.views - a.views)
+  else if (mode === 'alpha') sorted.sort((a,b) => a.name.localeCompare(b.name))
+  renderGrid(sorted)
+}
+
+renderGrid(SCRIPTS)
+
+// adblock detection
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const ad = document.createElement('div')
+    ad.className = 'adsbox'
+    ad.style.cssText = 'height:1px;position:absolute;left:-9999px'
+    document.body.appendChild(ad)
+    if (ad.offsetHeight === 0) {
+      document.getElementById('adblockNotice').style.display = 'block'
+    }
+    ad.remove()
+  }, 1500)
+})
+
+function dismissAdblock() {
+  document.getElementById('adblockNotice').style.display = 'none'
+}
+</script>
+
+</body>
+</html>
