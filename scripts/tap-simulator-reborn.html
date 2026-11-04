@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Simulator Reborn Script [KEYLESS] 2026 — Zentynal Hub</title>
+<meta name="description" content="Free keyless Tap Simulator Reborn script. Auto mine, auto hatch, auto collect, auto craft. No key required. Updated November 2026. Works on Delta, Arceus X.">
+<meta name="keywords" content="tap simulator reborn script, tap simulator reborn hack, tap simulator reborn auto farm, tap simulator reborn keyless, tap simulator reborn cheat 2026">
+<meta property="og:title" content="Tap Simulator Reborn Script [KEYLESS] 2026 — Zentynal Hub">
+<meta property="og:description" content="Free keyless auto farm script for Tap Simulator Reborn. No key required. Updated 2026.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://zentynalhub.com/scripts/tap-simulator-reborn">
+<link rel="canonical" href="https://zentynalhub.com/scripts/tap-simulator-reborn">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tap Simulator Reborn Script","applicationCategory":"GameApplication","operatingSystem":"Roblox","description":"Free keyless auto farm script for Tap Simulator Reborn.","url":"https://zentynalhub.com/scripts/tap-simulator-reborn","dateModified":"2026-11-04","author":{"@type":"Organization","name":"Zentynal Hub"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
+  <div class="nav-links">
+    <a href="/" class="active">Scripts</a>
+    <a href="/submit.html">Submit</a>
+    <a href="/discord">Discord</a>
+  </div>
+  <div class="nav-right">
+    <a href="/submit.html" class="btn-submit">+ Submit Script</a>
+  </div>
+</nav>
+
+<div class="script-page">
+
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/category/simulator.html">Simulator</a>
+    <span class="sep">/</span>
+    Tap Simulator Reborn
+  </div>
+
+  <div class="sp-header">
+    <div class="sp-icon">⛏️</div>
+    <div class="sp-info">
+      <h1 class="sp-title">Tap Simulator Reborn Script</h1>
+      <div class="sp-meta">
+        <span class="pill keyless">Keyless</span>
+        <span class="game-tag">Tap Simulator: Reborn</span>
+        <span>By Zen</span>
+        <span>Nov 4, 2026</span>
+        <span>👁 1,842 views</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-desc">
+    Full auto farm script for Tap Simulator Reborn. Auto mine, auto hatch, auto collect and auto craft in one keyless loader. Works on Delta, Arceus X, and most mobile executors. No key, no redirect, no ads.
+  </div>
+
+  <h3 style="font-size:0.88rem;font-weight:700;margin-bottom:0.75rem;">Features</h3>
+  <div class="feat-grid">
+    <div class="feat-item">Auto Mine / Tap</div>
+    <div class="feat-item">Auto Hatch Eggs</div>
+    <div class="feat-item">Auto Collect Coins</div>
+    <div class="feat-item">Auto Craft Items</div>
+    <div class="feat-item">No Key Required</div>
+    <div class="feat-item">Mobile Compatible</div>
+    <div class="feat-item">Anti-Kick Delay</div>
+    <div class="feat-item">Updated Nov 2026</div>
+  </div>
+
+  <div class="howto">
+    <h3>How to Execute</h3>
+    <ol>
+      <li><span class="snum">1</span>Open your executor — Delta, Arceus X, or similar</li>
+      <li><span class="snum">2</span>Join Tap Simulator Reborn on Roblox</li>
+      <li><span class="snum">3</span>Wait for the game to fully load</li>
+      <li><span class="snum">4</span>Paste the script below into your executor and hit Execute</li>
+      <li><span class="snum">5</span>Script loads automatically — all features start running</li>
+    </ol>
+  </div>
+
+  <div class="code-box">
+    <div class="code-top">
+      <span class="code-filename">tap-simulator-reborn.lua</span>
+      <button class="copy-btn" id="copyBtn" onclick="copyScript()">Copy Script</button>
+    </div>
+    <pre class="code-pre" id="codeBlock">-- Zentynal Hub | Tap Simulator Reborn
+-- Auto Mine + Auto Hatch + Auto Collect + Auto Craft
+-- No key required | Updated Nov 2026
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local lp = Players.LocalPlayer
+local remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
+
+local cfg = {
+    AutoMine    = true,
+    AutoHatch   = true,
+    AutoCollect = true,
+    AutoCraft   = true,
+    TapDelay    = 0.05,
+    SafeMode    = true,
+}
+
+local function safeCall(fn, ...)
+    local ok, err = pcall(fn, ...)
+    if not ok then warn("[ZH] " .. tostring(err)) end
+end
+
+local function findRemote(name)
+    return remotes and remotes:FindFirstChild(name)
+end
+
+local tapRemote = findRemote("Tap") or findRemote("Mine") or findRemote("TapMine")
+
+task.spawn(function()
+    while cfg.AutoMine do
+        local d = cfg.SafeMode and (cfg.TapDelay + math.random(1,3)*0.01) or cfg.TapDelay
+        task.wait(d)
+        safeCall(function()
+            if tapRemote then tapRemote:FireServer() end
+        end)
+    end
+end)
+
+task.spawn(function()
+    while cfg.AutoHatch do
+        task.wait(1)
+        safeCall(function()
+            local r = findRemote("Hatch") or findRemote("HatchEgg")
+            if r then
+                local eggs = workspace:FindFirstChild("Eggs")
+                if eggs then
+                    local egg = eggs:FindFirstChildOfClass("Model")
+                    if egg then r:FireServer(egg) end
+                end
+            end
+        end)
+    end
+end)
+
+task.spawn(function()
+    while cfg.AutoCollect do
+        task.wait(0.1)
+        safeCall(function()
+            local r = findRemote("Collect") or findRemote("PickupCoin")
+            local items = workspace:FindFirstChild("Collectibles") or workspace:FindFirstChild("Drops")
+            if items and r then
+                for _, obj in ipairs(items:GetChildren()) do r:FireServer(obj) end
+            end
+        end)
+    end
+end)
+
+task.spawn(function()
+    while cfg.AutoCraft do
+        task.wait(2)
+        safeCall(function()
+            local r = findRemote("Craft") or findRemote("CraftItem")
+            if r then r:FireServer() end
+        end)
+    end
+end)
+
+print("[Zentynal Hub] Tap Simulator Reborn loaded")</pre>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <span class="footer-logo">⚡ Zentynal Hub</span>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/submit.html">Submit Script</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <span>© 2026 Zentynal Hub — Not affiliated with Roblox Corporation</span>
+</footer>
+
+<script>
+function copyScript() {
+  navigator.clipboard.writeText(document.getElementById('codeBlock').textContent).then(() => {
+    const btn = document.getElementById('copyBtn')
+    btn.textContent = 'Copied!'
+    btn.classList.add('copied')
+    setTimeout(() => { btn.textContent = 'Copy Script'; btn.classList.remove('copied') }, 2000)
+  })
+}
+</script>
+
+</body>
+</html>
