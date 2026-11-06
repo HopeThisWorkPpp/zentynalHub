@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit a Script — Zentynal Hub</title>
-<meta name="description" content="Submit your Roblox script to Zentynal Hub. Free, keyless scripts for the community.">
-<link rel="canonical" href="https://zentynalhub.com/submit">
+<title id="pageTitle">Script — Zentynal Hub</title>
+<meta name="description" id="pageDesc" content="A free keyless Roblox script from Zentynal Hub.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
@@ -16,74 +15,16 @@
   <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
   <div class="nav-links" id="navLinks">
     <a href="/">Scripts</a>
-    <a href="/submit.html" class="active">Submit</a>
+    <a href="/submit.html">Submit</a>
     <a href="/discord">Discord</a>
   </div>
   <a href="/submit.html" class="btn-submit" style="margin-left:auto;">+ Submit Script</a>
   <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">☰</button>
 </nav>
 
-<div class="submit-page">
-  <h1>Submit a Script</h1>
-  <p class="sub">Share your script with the community. All submissions are reviewed before going live.</p>
-
-  <form id="submitForm" novalidate>
-
-    <div class="form-group">
-      <label class="form-label" for="f-name">Script Name *</label>
-      <input class="form-input" id="f-name" type="text" name="name" placeholder="e.g. Tap Simulator Reborn Auto Farm" required maxlength="80">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-game">Game Name *</label>
-      <input class="form-input" id="f-game" type="text" name="game" placeholder="e.g. Tap Simulator: Reborn" required maxlength="80">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-category">Category *</label>
-      <select class="form-select" id="f-category" name="category" required>
-        <option value="" disabled selected>Select a category</option>
-        <option value="simulator">Simulator</option>
-        <option value="fps">FPS</option>
-        <option value="rpg">RPG</option>
-        <option value="fighting">Fighting</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-creator">Your Name / Discord *</label>
-      <input class="form-input" id="f-creator" type="text" name="creator" placeholder="e.g. Zen#0001" required maxlength="40">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-desc">Short Description *</label>
-      <input class="form-input" id="f-desc" type="text" name="desc" placeholder="What does this script do? (1–2 sentences)" required maxlength="120">
-      <p class="form-hint"><span id="descCount">0</span>/120 characters</p>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-code">Script Code *</label>
-      <textarea class="form-textarea" id="f-code" name="code" placeholder="-- paste your Lua script here" required></textarea>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="f-keyless">Key System</label>
-      <select class="form-select" id="f-keyless" name="keyless">
-        <option value="keyless">Keyless (no key required)</option>
-        <option value="key">Has a key system</option>
-      </select>
-    </div>
-
-    <div id="errorMsg" style="display:none;margin-bottom:1rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:var(--r);padding:0.9rem 1.1rem;font-size:0.85rem;color:var(--red);"></div>
-
-    <button type="submit" class="btn-primary" id="submitBtn">Submit Script</button>
-
-    <div id="successMsg" style="display:none;margin-top:1rem;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:0.9rem 1.1rem;font-size:0.85rem;color:var(--green);">
-      ✓ Script submitted — we'll review and publish it within 24 hours.
-    </div>
-
-  </form>
+<div class="detail-page" id="detailPage">
+  <div class="breadcrumb"><a href="/">Scripts</a> / Loading…</div>
+  <div style="text-align:center;padding:3rem 0;color:var(--muted);">Loading script…</div>
 </div>
 
 <footer class="footer">
@@ -97,79 +38,104 @@
 </footer>
 
 <script>
-const descInput = document.getElementById('f-desc')
-const descCount = document.getElementById('descCount')
-descInput.addEventListener('input', () => { descCount.textContent = descInput.value.length })
+// ═══════════════════════════════════════════════════════
+// 👇 Fill these in from your Supabase project settings
+// (Project Settings → API Keys). Use the PUBLISHABLE key
+// (sb_publishable_...), never the secret key.
+// ═══════════════════════════════════════════════════════
+const SUPABASE_URL = "https://utynmjcquyhltukukpif.supabase.co"
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_A8GBF1fEbA06jpybUyg2Zw_H_L_eXdU"
 
-document.getElementById('submitForm').addEventListener('submit', async (e) => {
-  e.preventDefault()
-  const form = e.target
-  const errorBox = document.getElementById('errorMsg')
-  errorBox.style.display = 'none'
+function esc(str) {
+  const div = document.createElement('div')
+  div.textContent = str ?? ''
+  return div.innerHTML
+}
 
-  if (!form.checkValidity()) {
-    errorBox.textContent = 'Please fill in every required field before submitting.'
-    errorBox.style.display = 'block'
-    form.reportValidity()
+function formatDate(iso) {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+async function loadScript() {
+  const container = document.getElementById('detailPage')
+  const id = new URLSearchParams(location.search).get('id')
+
+  if (!id) {
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">No script specified. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
     return
   }
 
-  const btn = document.getElementById('submitBtn')
-  btn.textContent = 'Submitting...'
-  btn.disabled = true
-
-  const data = Object.fromEntries(new FormData(form).entries())
-
-  // Turn "My Cool Script!" into a readable, unique-ish id like "my-cool-script-x7k2"
-  const slug = data.name.toLowerCase().trim()
-    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-  const id = `${slug}-${Math.random().toString(36).slice(2, 6)}`
-
-  const payload = {
-    id,
-    name: data.name,
-    game: data.game,
-    icon: '🎮',
-    category: data.category,
-    description: data.desc,
-    creator: data.creator,
-    code: data.code,
-    keyless: data.keyless === 'keyless',
-    views: 0,
-    approved: false
-  }
-
+  let script
   try {
-    // ═══════════════════════════════════════════════════════
-    // 👇 Fill these in from your Supabase project settings
-    // (Project Settings → API Keys). Use the PUBLISHABLE key
-    // (sb_publishable_...), never the secret key.
-    // ═══════════════════════════════════════════════════════
-    const SUPABASE_URL = "https://utynmjcquyhltukukpif.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_A8GBF1fEbA06jpybUyg2Zw_H_L_eXdU"
-
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/scripts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_PUBLISHABLE_KEY,
-        "Prefer": "return=minimal"
-      },
-      body: JSON.stringify(payload)
-    })
-    if (!res.ok) throw new Error("Submission failed")
-
-    form.style.opacity = '0.4'
-    document.getElementById('successMsg').style.display = 'block'
-    btn.style.display = 'none'
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/scripts?select=*&id=eq.${encodeURIComponent(id)}&approved=eq.true`,
+      { headers: { apikey: SUPABASE_PUBLISHABLE_KEY } }
+    )
+    if (!res.ok) throw new Error('HTTP ' + res.status)
+    const rows = await res.json()
+    script = rows[0]
   } catch (err) {
     console.error(err)
-    errorBox.textContent = "Couldn't reach the server. Try again in a moment, or ping us in Discord."
-    errorBox.style.display = 'block'
-    btn.textContent = 'Submit Script'
-    btn.disabled = false
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">Couldn't load this script. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
+    return
   }
-})
+
+  if (!script) {
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">Script not found — it may be pending review. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
+    return
+  }
+
+  document.getElementById('pageTitle').textContent = `${script.name} — Zentynal Hub`
+  document.getElementById('pageDesc').setAttribute('content', script.description)
+
+  container.innerHTML = `
+    <div class="breadcrumb"><a href="/">Scripts</a> / ${esc(script.game)}</div>
+    <div class="detail-header">
+      <div class="detail-icon">${esc(script.icon)}</div>
+      <div>
+        <div class="detail-title">${esc(script.name)}</div>
+        <div class="detail-meta">
+          ${script.keyless ? '<span class="pill keyless">Keyless</span>' : '<span class="pill paid">Key</span>'}
+          <span>by ${esc(script.creator)}</span>
+          <span id="viewCount">${script.views.toLocaleString()} views</span>
+          <span>Updated ${formatDate(script.created_at)}</span>
+        </div>
+      </div>
+    </div>
+    <p class="detail-desc">${esc(script.description)}</p>
+    <div class="code-box">
+      <div class="code-box-header">
+        <span>${esc(script.id)}.lua</span>
+        <button class="copy-btn" id="copyBtn">Copy Script</button>
+      </div>
+      <pre id="codeBlock">${esc(script.code)}</pre>
+    </div>
+    <a href="/" class="view-all">← Back to all scripts</a>
+  `
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(script.code).then(() => {
+      const btn = document.getElementById('copyBtn')
+      const original = btn.textContent
+      btn.textContent = 'Copied!'
+      btn.classList.add('copied')
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied') }, 1500)
+    })
+  })
+
+  // Count this view once, server-side, via the RPC — never a raw client-side increment.
+  fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_script_views`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_PUBLISHABLE_KEY
+    },
+    body: JSON.stringify({ script_id: script.id })
+  }).catch(err => console.error('View count update failed:', err))
+}
+
+loadScript()
 
 document.getElementById('navMenuBtn').addEventListener('click', () => {
   const nav = document.getElementById('navLinks')
