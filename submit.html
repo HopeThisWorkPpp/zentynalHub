@@ -14,35 +14,34 @@
 
 <nav class="nav">
   <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="/">Scripts</a>
     <a href="/submit.html" class="active">Submit</a>
     <a href="/discord">Discord</a>
   </div>
-  <div class="nav-right">
-    <a href="/submit.html" class="btn-submit">+ Submit Script</a>
-  </div>
+  <a href="/submit.html" class="btn-submit" style="margin-left:auto;">+ Submit Script</a>
+  <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">☰</button>
 </nav>
 
 <div class="submit-page">
   <h1>Submit a Script</h1>
   <p class="sub">Share your script with the community. All submissions are reviewed before going live.</p>
 
-  <form id="submitForm" onsubmit="handleSubmit(event)">
+  <form id="submitForm" novalidate>
 
     <div class="form-group">
-      <label class="form-label">Script Name *</label>
-      <input class="form-input" type="text" name="name" placeholder="e.g. Tap Simulator Reborn Auto Farm" required>
+      <label class="form-label" for="f-name">Script Name *</label>
+      <input class="form-input" id="f-name" type="text" name="name" placeholder="e.g. Tap Simulator Reborn Auto Farm" required maxlength="80">
     </div>
 
     <div class="form-group">
-      <label class="form-label">Game Name *</label>
-      <input class="form-input" type="text" name="game" placeholder="e.g. Tap Simulator: Reborn" required>
+      <label class="form-label" for="f-game">Game Name *</label>
+      <input class="form-input" id="f-game" type="text" name="game" placeholder="e.g. Tap Simulator: Reborn" required maxlength="80">
     </div>
 
     <div class="form-group">
-      <label class="form-label">Category *</label>
-      <select class="form-select" name="category" required>
+      <label class="form-label" for="f-category">Category *</label>
+      <select class="form-select" id="f-category" name="category" required>
         <option value="" disabled selected>Select a category</option>
         <option value="simulator">Simulator</option>
         <option value="fps">FPS</option>
@@ -53,28 +52,30 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label">Your Name / Discord *</label>
-      <input class="form-input" type="text" name="creator" placeholder="e.g. Zen#0001" required>
+      <label class="form-label" for="f-creator">Your Name / Discord *</label>
+      <input class="form-input" id="f-creator" type="text" name="creator" placeholder="e.g. Zen#0001" required maxlength="40">
     </div>
 
     <div class="form-group">
-      <label class="form-label">Short Description *</label>
-      <input class="form-input" type="text" name="desc" placeholder="What does this script do? (1–2 sentences)" required>
-      <p class="form-hint">This shows on the script card. Keep it under 120 characters.</p>
+      <label class="form-label" for="f-desc">Short Description *</label>
+      <input class="form-input" id="f-desc" type="text" name="desc" placeholder="What does this script do? (1–2 sentences)" required maxlength="120">
+      <p class="form-hint"><span id="descCount">0</span>/120 characters</p>
     </div>
 
     <div class="form-group">
-      <label class="form-label">Script Code *</label>
-      <textarea class="form-textarea" name="code" placeholder="-- paste your Lua script here" required></textarea>
+      <label class="form-label" for="f-code">Script Code *</label>
+      <textarea class="form-textarea" id="f-code" name="code" placeholder="-- paste your Lua script here" required></textarea>
     </div>
 
     <div class="form-group">
-      <label class="form-label">Key System</label>
-      <select class="form-select" name="keyless">
+      <label class="form-label" for="f-keyless">Key System</label>
+      <select class="form-select" id="f-keyless" name="keyless">
         <option value="keyless">Keyless (no key required)</option>
         <option value="key">Has a key system</option>
       </select>
     </div>
+
+    <div id="errorMsg" style="display:none;margin-bottom:1rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:var(--r);padding:0.9rem 1.1rem;font-size:0.85rem;color:var(--red);"></div>
 
     <button type="submit" class="btn-primary" id="submitBtn">Submit Script</button>
 
@@ -96,19 +97,84 @@
 </footer>
 
 <script>
-function handleSubmit(e) {
+const descInput = document.getElementById('f-desc')
+const descCount = document.getElementById('descCount')
+descInput.addEventListener('input', () => { descCount.textContent = descInput.value.length })
+
+document.getElementById('submitForm').addEventListener('submit', async (e) => {
   e.preventDefault()
+  const form = e.target
+  const errorBox = document.getElementById('errorMsg')
+  errorBox.style.display = 'none'
+
+  if (!form.checkValidity()) {
+    errorBox.textContent = 'Please fill in every required field before submitting.'
+    errorBox.style.display = 'block'
+    form.reportValidity()
+    return
+  }
+
   const btn = document.getElementById('submitBtn')
   btn.textContent = 'Submitting...'
   btn.disabled = true
-  setTimeout(() => {
-    document.getElementById('submitForm').style.opacity = '0.4'
+
+  const data = Object.fromEntries(new FormData(form).entries())
+
+  // Turn "My Cool Script!" into a readable, unique-ish id like "my-cool-script-x7k2"
+  const slug = data.name.toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  const id = `${slug}-${Math.random().toString(36).slice(2, 6)}`
+
+  const payload = {
+    id,
+    name: data.name,
+    game: data.game,
+    icon: '🎮',
+    category: data.category,
+    description: data.desc,
+    creator: data.creator,
+    code: data.code,
+    keyless: data.keyless === 'keyless',
+    views: 0,
+    approved: false
+  }
+
+  try {
+    // ═══════════════════════════════════════════════════════
+    // 👇 Fill these in from your Supabase project settings
+    // ═══════════════════════════════════════════════════════
+    const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"
+    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY"
+
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/scripts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    })
+    if (!res.ok) throw new Error("Submission failed")
+
+    form.style.opacity = '0.4'
     document.getElementById('successMsg').style.display = 'block'
     btn.style.display = 'none'
-  }, 800)
-  // wire to your backend / Discord webhook here
-  // fetch('https://discord.com/api/webhooks/YOUR_WEBHOOK', { method:'POST', ... })
-}
+  } catch (err) {
+    console.error(err)
+    errorBox.textContent = "Couldn't reach the server. Try again in a moment, or ping us in Discord."
+    errorBox.style.display = 'block'
+    btn.textContent = 'Submit Script'
+    btn.disabled = false
+  }
+})
+
+document.getElementById('navMenuBtn').addEventListener('click', () => {
+  const nav = document.getElementById('navLinks')
+  nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex'
+  nav.style.cssText += 'position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--surface);padding:1rem 1.5rem;border-bottom:1px solid var(--border);gap:0.8rem;'
+})
 </script>
 
 </body>
