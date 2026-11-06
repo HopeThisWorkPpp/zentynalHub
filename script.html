@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Script — Zentynal Hub</title>
+<meta name="description" id="pageDesc" content="A free keyless Roblox script from Zentynal Hub.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">⚡ <span>Zentynal</span> Hub</a>
+  <div class="nav-links" id="navLinks">
+    <a href="/">Scripts</a>
+    <a href="/submit.html">Submit</a>
+    <a href="/discord">Discord</a>
+  </div>
+  <a href="/submit.html" class="btn-submit" style="margin-left:auto;">+ Submit Script</a>
+  <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">☰</button>
+</nav>
+
+<div class="detail-page" id="detailPage">
+  <div class="breadcrumb"><a href="/">Scripts</a> / Loading…</div>
+  <div style="text-align:center;padding:3rem 0;color:var(--muted);">Loading script…</div>
+</div>
+
+<footer class="footer">
+  <span class="footer-logo">⚡ Zentynal Hub</span>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/discord">Discord</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+  <span>© 2026 Zentynal Hub</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// 👇 Fill these in from your Supabase project settings
+// ═══════════════════════════════════════════════════════
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"
+const SUPABASE_ANON_KEY = "YOUR-ANON-KEY"
+
+function esc(str) {
+  const div = document.createElement('div')
+  div.textContent = str ?? ''
+  return div.innerHTML
+}
+
+function formatDate(iso) {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+async function loadScript() {
+  const container = document.getElementById('detailPage')
+  const id = new URLSearchParams(location.search).get('id')
+
+  if (!id) {
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">No script specified. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
+    return
+  }
+
+  let script
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/scripts?select=*&id=eq.${encodeURIComponent(id)}&approved=eq.true`,
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+    )
+    if (!res.ok) throw new Error('HTTP ' + res.status)
+    const rows = await res.json()
+    script = rows[0]
+  } catch (err) {
+    console.error(err)
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">Couldn't load this script. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
+    return
+  }
+
+  if (!script) {
+    container.innerHTML = `<div style="text-align:center;padding:3rem 0;color:var(--muted);">Script not found — it may be pending review. <a href="/" style="color:var(--accent-bright)">Back to all scripts</a></div>`
+    return
+  }
+
+  document.getElementById('pageTitle').textContent = `${script.name} — Zentynal Hub`
+  document.getElementById('pageDesc').setAttribute('content', script.description)
+
+  container.innerHTML = `
+    <div class="breadcrumb"><a href="/">Scripts</a> / ${esc(script.game)}</div>
+    <div class="detail-header">
+      <div class="detail-icon">${esc(script.icon)}</div>
+      <div>
+        <div class="detail-title">${esc(script.name)}</div>
+        <div class="detail-meta">
+          ${script.keyless ? '<span class="pill keyless">Keyless</span>' : '<span class="pill paid">Key</span>'}
+          <span>by ${esc(script.creator)}</span>
+          <span id="viewCount">${script.views.toLocaleString()} views</span>
+          <span>Updated ${formatDate(script.created_at)}</span>
+        </div>
+      </div>
+    </div>
+    <p class="detail-desc">${esc(script.description)}</p>
+    <div class="code-box">
+      <div class="code-box-header">
+        <span>${esc(script.id)}.lua</span>
+        <button class="copy-btn" id="copyBtn">Copy Script</button>
+      </div>
+      <pre id="codeBlock">${esc(script.code)}</pre>
+    </div>
+    <a href="/" class="view-all">← Back to all scripts</a>
+  `
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(script.code).then(() => {
+      const btn = document.getElementById('copyBtn')
+      const original = btn.textContent
+      btn.textContent = 'Copied!'
+      btn.classList.add('copied')
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied') }, 1500)
+    })
+  })
+
+  // Count this view once, server-side, via the RPC — never a raw client-side increment.
+  fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_script_views`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body: JSON.stringify({ script_id: script.id })
+  }).catch(err => console.error('View count update failed:', err))
+}
+
+loadScript()
+
+document.getElementById('navMenuBtn').addEventListener('click', () => {
+  const nav = document.getElementById('navLinks')
+  nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex'
+  nav.style.cssText += 'position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--surface);padding:1rem 1.5rem;border-bottom:1px solid var(--border);gap:0.8rem;'
+})
+</script>
+
+</body>
+</html>
