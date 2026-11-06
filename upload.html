@@ -5,64 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Upload Script — Zentynal Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0b0b13; --surface:#111120; --card:#13131f; --border:#1e1e32;
-    --accent:#7c3aed; --accent-b:#9d5cf6; --text:#e4e4f0; --muted:#5c5c80;
-    --green:#22c55e; --red:#ef4444; --r:10px; --r-lg:14px;
+    --bg: #0b0b13; --surface: #111120; --card: #13131f; --border: #1e1e32;
+    --accent: #7c3aed; --accent-b: #9d5cf6; --text: #e4e4f0; --muted: #5c5c80;
+    --green: #22c55e; --red: #ef4444; --r: 10px; --r-lg: 14px;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;min-height:100vh}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; }
 
-  .upload-sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);padding:2rem 1.5rem;display:flex;flex-direction:column}
-  .sidebar-title{font-size:1.2rem;font-weight:800;margin-bottom:.5rem}
-  .sidebar-sub{color:var(--muted);font-size:.8rem;margin-bottom:2rem}
-  .step-list{display:flex;flex-direction:column;gap:1.5rem;position:relative}
-  .step-list::before{content:'';position:absolute;left:17px;top:10px;bottom:10px;width:2px;background:var(--border);z-index:0}
-  .step{display:flex;align-items:center;gap:1rem;position:relative;z-index:1;color:var(--muted)}
-  .step.active{color:var(--text);font-weight:600}
-  .step-num{width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;transition:all .2s}
-  .step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
-  .step.completed .step-num{background:var(--green);border-color:var(--green);color:#fff}
-  .step-name{font-size:.9rem}
+  .upload-sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; flex-direction: column; }
+  .sidebar-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .sidebar-sub { color: var(--muted); font-size: 0.8rem; margin-bottom: 2rem; }
+  .step-list { display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
+  .step-list::before { content: ''; position: absolute; left: 17px; top: 10px; bottom: 10px; width: 2px; background: var(--border); z-index: 0; }
+  .step { display: flex; align-items: center; gap: 1rem; position: relative; z-index: 1; color: var(--muted); }
+  .step.active { color: var(--text); font-weight: 600; }
+  .step-num { width: 36px; height: 36px; border-radius: 8px; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; transition: all 0.2s; }
+  .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step.completed .step-num { background: var(--green); border-color: var(--green); color: #fff; }
+  .step-name { font-size: 0.9rem; }
 
-  .upload-main{flex:1;padding:2.5rem 4rem;max-width:900px}
-  .upload-header h1{font-size:1.8rem;font-weight:800;margin-bottom:.5rem}
-  .upload-header p{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem}
+  .upload-main { flex: 1; padding: 2.5rem 4rem; max-width: 900px; }
+  .upload-header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .upload-header p { color: var(--muted); font-size: 0.95rem; margin-bottom: 2.5rem; }
 
-  .game-options{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
-  .game-option{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;cursor:pointer;transition:all .2s}
-  .game-option:hover{border-color:var(--muted)}
-  .game-option.selected{border-color:var(--accent);background:rgba(124,58,237,.05)}
-  .radio-circle{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);margin-bottom:1rem;display:inline-block}
-  .game-option.selected .radio-circle{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px var(--card)}
-  .game-option h3{font-size:1.05rem;margin-bottom:.4rem}
-  .game-option p{font-size:.8rem;color:var(--muted);line-height:1.4}
+  .game-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .game-option { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; cursor: pointer; transition: all 0.2s; }
+  .game-option:hover { border-color: var(--muted); }
+  .game-option.selected { border-color: var(--accent); background: rgba(124,58,237,0.05); }
+  .radio-circle { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--muted); margin-bottom: 1rem; display: inline-block; }
+  .game-option.selected .radio-circle { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--card); }
+  .game-option h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .game-option p { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
 
-  .search-input-wrapper{position:relative;margin-bottom:1rem}
-  .search-input-wrapper input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1rem 1rem 3rem;color:var(--text);font-size:.95rem;outline:none;transition:border-color .2s}
-  .search-input-wrapper input:focus{border-color:var(--accent)}
-  .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .search-input-wrapper { position: relative; margin-bottom: 1rem; }
+  .search-input-wrapper input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem 1rem 1rem 3rem; color: var(--text); font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+  .search-input-wrapper input:focus { border-color: var(--accent); }
+  .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
-  .search-results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:100;max-height:320px;overflow-y:auto;display:none}
-  .search-results.active{display:block}
-  .result-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
-  .result-item:last-child{border-bottom:none}
-  .result-item:hover{background:var(--surface)}
-  .result-img{width:44px;height:44px;border-radius:8px;background:#222;display:flex;align-items:center;justify-content:center;font-size:1.2rem;overflow:hidden;flex-shrink:0}
-  .result-img img{width:100%;height:100%;object-fit:cover}
-  .result-info h4{font-size:.9rem;margin-bottom:2px}
-  .result-info span{font-size:.75rem;color:var(--muted)}
-  .loading-item{padding:1rem;color:var(--muted);font-size:.85rem;text-align:center}
+  .search-results { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--r); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; max-height: 320px; overflow-y: auto; display: none; }
+  .search-results.active { display: block; }
+  .result-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .result-item:last-child { border-bottom: none; }
+  .result-item:hover { background: var(--surface); }
+  .result-img { width: 44px; height: 44px; border-radius: 8px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; overflow: hidden; flex-shrink: 0; }
+  .result-img img { width: 100%; height: 100%; object-fit: cover; }
+  .result-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
+  .result-info span { font-size: 0.75rem; color: var(--muted); }
+  .loading-item { padding: 1rem; color: var(--muted); font-size: 0.85rem; text-align: center; }
 
-  .btn-continue{background:var(--accent);color:#fff;border:none;padding:.85rem 2rem;border-radius:var(--r);font-weight:600;font-size:.95rem;cursor:pointer;transition:background .2s;opacity:.5;pointer-events:none}
-  .btn-continue.ready{opacity:1;pointer-events:auto}
-  .btn-continue:hover{background:var(--accent-b)}
-  .helper-text{font-size:.8rem;color:var(--muted);margin-top:.5rem;display:block}
+  .btn-continue { background: var(--accent); color: #fff; border: none; padding: 0.85rem 2rem; border-radius: var(--r); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; opacity: 0.5; pointer-events: none; }
+  .btn-continue.ready { opacity: 1; pointer-events: auto; }
+  .btn-continue:hover { background: var(--accent-b); }
+  .helper-text { font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; display: block; }
 
-  .selected-preview{margin-top:2rem;padding:1rem;border:1px dashed var(--border);border-radius:var(--r);display:none;align-items:center;gap:1rem}
-  .selected-preview.active{display:flex}
+  .selected-preview { margin-top: 2rem; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--r); display: none; align-items: center; gap: 1rem; }
+  .selected-preview.active { display: flex; }
 </style>
 </head>
 <body>
@@ -120,32 +120,32 @@
           <h4 id="previewName">Game Name</h4>
           <span id="previewId">ID: 1234567</span>
         </div>
-        <button style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;" onclick="resetSelection()">✕</button>
+        <button style="margin-left:auto; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem;" onclick="resetSelection()">✕</button>
       </div>
 
-      <div style="margin-top:2rem;">
+      <div style="margin-top: 2rem;">
         <button class="btn-continue" id="continueBtn" onclick="goToStep2()">Continue</button>
       </div>
     </div>
 
-    <div id="stepContent2" style="display:none;">
+    <div id="stepContent2" style="display: none;">
       <div class="upload-header">
         <h1>Build your script page</h1>
         <p>This is how players will see it. Fill in the basics, the rest is optional.</p>
       </div>
-      <div style="background:var(--surface);border:1px dashed var(--border);padding:3rem;border-radius:var(--r);text-align:center;color:var(--muted);">
+      <div style="background: var(--surface); border: 1px dashed var(--border); padding: 3rem; border-radius: var(--r); text-align: center; color: var(--muted);">
         Script details form goes here.
         <br><br>
-        <button onclick="goToStep1()" style="background:none;border:1px solid var(--border);color:var(--text);padding:.5rem 1rem;border-radius:6px;cursor:pointer;">Back to Step 1</button>
+        <button onclick="goToStep1()" style="background:none; border:1px solid var(--border); color:var(--text); padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Back to Step 1</button>
       </div>
     </div>
   </main>
 
 <script>
   // ═══════════════════════════════════════════════════════
-  //  👇 CHANGE THIS to your Cloudflare Worker URL
+  //  👇 REPLACE THIS with your Cloudflare Worker URL
   // ═══════════════════════════════════════════════════════
-  const BACKEND = "https://zh-roblox.YOURNAME.workers.dev";
+  const BACKEND = "https://your-worker-name.your-subdomain.workers.dev";
 
   let selectedGame = null;
   let currentType = "specific";
@@ -186,21 +186,24 @@
   async function doSearch(q) {
     const box = document.getElementById("searchResults");
 
-    if (cache[q]) { renderResults(cache[q]); return; }
+    if (cache[q]) {
+      renderResults(cache[q]);
+      return;
+    }
 
     box.innerHTML = `<div class="loading-item">Searching Roblox…</div>`;
     box.classList.add("active");
 
     try {
-      const res = await fetch(`${BACKEND}/search?q=${encodeURIComponent(q)}`);
+      const res = await fetch(`${BACKEND}?q=${encodeURIComponent(q)}`);
       if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
-      const games = data.searchResults || [];
+      const games = data.games || [];
       cache[q] = games;
       renderResults(games);
     } catch (err) {
       console.error(err);
-      box.innerHTML = `<div class="loading-item" style="color:var(--red)">Search failed. Check your worker URL / deploy status.</div>`;
+      box.innerHTML = `<div class="loading-item" style="color:var(--red)">Search failed. Check your worker URL.</div>`;
     }
   }
 
@@ -213,7 +216,7 @@
       return;
     }
 
-    box.innerHTML = games.slice(0, 12).map(g => {
+    box.innerHTML = games.map(g => {
       const safeName = (g.name || "").replace(/'/g, "\\'");
       const icon = g.thumbnailUrl
         ? `<img src="${g.thumbnailUrl}" onerror="this.parentElement.textContent='🎮'">`
@@ -223,7 +226,7 @@
           <div class="result-img">${icon}</div>
           <div class="result-info">
             <h4>${g.name}</h4>
-            <span>Universe: ${g.universeId} • Players: ${g.playerCount || 0}</span>
+            <span>Players: ${g.playerCount.toLocaleString()}</span>
           </div>
         </div>`;
     }).join("");
